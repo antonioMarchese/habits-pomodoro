@@ -6,18 +6,23 @@ import { GlobalStyle } from "./styles/global";
 import { Router } from "./Router";
 import { CyclesContextProvider } from "./context/cyclesContext";
 import AudioPlayer from "./pages/home/components/radio";
+import { SettingsContextProvider } from "./context/settingsContext";
+import ToastContainer from "./components/Toast/toastContainer";
 
 function App() {
   return (
-    <ThemeProvider theme={defaultTheme}>
-      <GlobalStyle />
-      <BrowserRouter>
-        <CyclesContextProvider>
-          <AudioPlayer />
-          <Router />
-        </CyclesContextProvider>
-      </BrowserRouter>
-    </ThemeProvider>
+    <SettingsContextProvider>
+      <ThemeProvider theme={defaultTheme}>
+        <GlobalStyle />
+        <ToastContainer />
+        <BrowserRouter>
+          <CyclesContextProvider>
+            <AudioPlayer />
+            <Router />
+          </CyclesContextProvider>
+        </BrowserRouter>
+      </ThemeProvider>
+    </SettingsContextProvider>
   );
 }
 

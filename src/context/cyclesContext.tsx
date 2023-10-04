@@ -2,24 +2,42 @@ import React, { createContext, useEffect, useReducer, useState } from "react";
 import { CyclesReducer } from "../reducers/cycles/reducer";
 import {
   addNewCycleAction,
+  clearCycles,
   interrupCycle,
   markCycleFinished,
+  markRundFinished,
+  pauseCycle,
+  playCycle,
+  stopRest,
 } from "../reducers/cycles/actions";
 
 import { differenceInSeconds } from "date-fns";
+import CreateToast from "../utils/createToast";
+import {
+  SuccessCycleFinishedToast,
+  SuccessCyclesCleanedToast,
+  SuccessRoundFinishedToast,
+} from "../utils/toasts";
 
 interface CreateCycleProps {
   task: string;
-  timing: number;
+  workDuration: number;
+  restDuration: number;
 }
 
 export interface CycleProps {
   id: string;
   task: string;
+  rounds: number;
   minutesAmount: number;
+  restMinutesAmount: number;
   startDate: Date;
+  roundStartDate: Date;
   interruptedDate?: Date;
   finishedDate?: Date;
+  isPaused?: boolean;
+  isInRest?: boolean;
+  amountSecondsPassedBeforePause?: number;
 }
 
 interface CyclesContextProps {
@@ -29,14 +47,21 @@ interface CyclesContextProps {
   amountSecondsPassed: number;
   shouldPlayAlarm: boolean;
   markCurrentCycleAsFinished: () => void;
+  markCurrentRoundAsFinished: () => void;
+  setStopRest: () => void;
   setSecondsPassed: (secondsToSet: number) => void;
   createNewCycle: (cycle: CreateCycleProps) => void;
   interruptCycle: () => void;
+  pauseCurrentCycle: () => void;
+  continueCycle: () => void;
+  clearCyclesHistory: () => void;
 }
 
 interface CyclesContextProviderProps {
   children: React.ReactNode; // Qualquer jsx/html válido
 }
+
+const cyclesLocalStorageKey = "@habits-pomodoro:cycles-state-1.0.0";
 
 export const CyclesContext = createContext({} as CyclesContextProps);
 
@@ -51,9 +76,7 @@ export function CyclesContextProvider({
       activeCycleId: null,
     },
     (initalState) => {
-      const storageStateJSON = localStorage.getItem(
-        "@habits-pomodoro:cycles-state-1.0.0"
-      );
+      const storageStateJSON = localStorage.getItem(cyclesLocalStorageKey);
 
       return storageStateJSON ? JSON.parse(storageStateJSON) : initalState;
     }
@@ -66,7 +89,10 @@ export function CyclesContextProvider({
 
   const [amountSecondsPassed, setAmountSecondsPassed] = useState(() => {
     if (activeCycle) {
-      return differenceInSeconds(new Date(), new Date(activeCycle.startDate));
+      return differenceInSeconds(
+        new Date(),
+        new Date(activeCycle.roundStartDate)
+      );
     }
     return 0;
   });
@@ -75,8 +101,12 @@ export function CyclesContextProvider({
     const newCycle: CycleProps = {
       id: String(new Date().getTime()),
       task: data.task,
-      minutesAmount: data.timing,
+      minutesAmount: data.workDuration,
+      restMinutesAmount: data.restDuration,
       startDate: new Date(),
+      roundStartDate: new Date(),
+      rounds: 0,
+      isPaused: false,
     };
     dispatch(addNewCycleAction(newCycle));
     setShouldPlayAlarm(false);
@@ -84,12 +114,47 @@ export function CyclesContextProvider({
   }
 
   function interruptCycle() {
-    dispatch(interrupCycle());
+    dispatch(interrupCycle(amountSecondsPassed));
+  }
+
+  function pauseCurrentCycle() {
+    dispatch(pauseCycle(amountSecondsPassed));
+  }
+
+  function continueCycle() {
+    dispatch(playCycle());
+  }
+
+  function clearCyclesHistory() {
+    CreateToast(SuccessCyclesCleanedToast);
+    dispatch(clearCycles());
+    localStorage.removeItem(cyclesLocalStorageKey);
   }
 
   function markCurrentCycleAsFinished() {
+    CreateToast(SuccessCycleFinishedToast);
     setShouldPlayAlarm(true);
     dispatch(markCycleFinished());
+    setTimeout(() => {
+      setShouldPlayAlarm(false);
+    }, 8000);
+  }
+
+  function setStopRest() {
+    setShouldPlayAlarm(true);
+    dispatch(stopRest());
+    setTimeout(() => {
+      setShouldPlayAlarm(false);
+    }, 8000);
+  }
+
+  function markCurrentRoundAsFinished() {
+    CreateToast(SuccessRoundFinishedToast);
+    setShouldPlayAlarm(true);
+    dispatch(markRundFinished());
+    setTimeout(() => {
+      setShouldPlayAlarm(false);
+    }, 8000);
   }
 
   function setSecondsPassed(secondsToSet: number) {
@@ -99,7 +164,7 @@ export function CyclesContextProvider({
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState);
 
-    localStorage.setItem("@habits-pomodoro:cycles-state-1.0.0", stateJSON);
+    localStorage.setItem(cyclesLocalStorageKey, stateJSON);
   }, [cyclesState]);
 
   return (
@@ -111,9 +176,14 @@ export function CyclesContextProvider({
         amountSecondsPassed,
         shouldPlayAlarm,
         markCurrentCycleAsFinished,
+        markCurrentRoundAsFinished,
+        setStopRest,
         setSecondsPassed,
         createNewCycle,
         interruptCycle,
+        pauseCurrentCycle,
+        continueCycle,
+        clearCyclesHistory,
       }}
     >
       {children}

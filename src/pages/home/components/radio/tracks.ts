@@ -5,6 +5,9 @@ import short from "/audios/bgmusic4.mp3";
 import lofi from "/audios/lofi.mp3";
 import meditation from "/audios/meditation.mp3";
 import rainMeditation from "/audios/rain-meditation.mp3";
+import rainCafe from "/audios/rainCafe.mp3";
+import weekends from "/audios/weekends.mp3";
+import wishYouWereHere from "/audios/wishYouWereHere.mp3";
 
 export interface Track {
   title: string;
@@ -39,5 +42,17 @@ export const tracks: Track[] = [
   {
     title: "Rain Meditation",
     src: rainMeditation,
+  },
+  {
+    title: "Rain Cafe",
+    src: rainCafe,
+  },
+  {
+    title: "Weekends",
+    src: weekends,
+  },
+  {
+    title: "Wish You Were Here",
+    src: wishYouWereHere,
   },
 ];

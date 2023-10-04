@@ -1,16 +1,18 @@
 import { useFormContext } from "react-hook-form";
-import { FormContainer, MinutesInput, TaskInput } from "./styles";
+import { FormContainer, TaskInput } from "./styles";
+import { useContext } from "react";
+import { CyclesContext } from "../../../../context/cyclesContext";
 
 export function NewCycleForm({ disabled }: { disabled: boolean }) {
   const { register } = useFormContext();
+  const { cycles } = useContext(CyclesContext);
 
   return (
     <FormContainer>
-      <label htmlFor="task">Vou trabalhar em</label>
       <TaskInput
         type="text"
         id="task"
-        placeholder="Nomeie o seu projeto"
+        placeholder="Começar jornada"
         list="task-sugestion"
         autoComplete="off"
         disabled={disabled}
@@ -18,22 +20,9 @@ export function NewCycleForm({ disabled }: { disabled: boolean }) {
       />
 
       <datalist id="task-sugestion">
-        <option value="Projeto 1" />
-        <option value="Projeto 2" />
-        <option value="Projeto 3" />
+        {cycles.length > 0 &&
+          cycles.map((cycle) => <option key={cycle.id} value={cycle.task} />)}
       </datalist>
-
-      <label htmlFor="timing">durante</label>
-      <MinutesInput
-        type="number"
-        id="timing"
-        placeholder="00"
-        max={60}
-        disabled={disabled}
-        {...register("timing", { valueAsNumber: true })}
-      />
-
-      <span>minutos</span>
     </FormContainer>
   );
 }

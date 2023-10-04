@@ -6,6 +6,15 @@ export const HistoryContainer = styled.main`
   display: flex;
   flex-direction: column;
 
+  .empty {
+    text-align: center;
+    color: ${({ theme }) => theme["gray-300"]};
+    a {
+      text-decoration: none !important;
+      color: ${({ theme }) => theme["green-300"]};
+    }
+  }
+
   h1 {
     font-size: 1.5rem;
     color: ${({ theme }) => theme["gray-100"]};
@@ -25,13 +34,14 @@ export const HistoryList = styled.div`
     th {
       background-color: ${({ theme }) => theme["gray-600"]};
       padding: 1rem;
-      text-align: left;
+      text-align: center;
       font-size: 0.875rem;
       line-height: 1.6rem;
 
       &:first-child {
         border-top-left-radius: 8px;
         padding-left: 1.5rem;
+        text-align: left;
       }
 
       &:last-child {
@@ -47,10 +57,12 @@ export const HistoryList = styled.div`
 
       font-size: 0.875rem;
       line-height: 1.6rem;
+      text-align: center;
 
       &:first-child {
-        width: 50%;
+        width: 40%;
         padding-left: 1.5rem;
+        text-align: left;
       }
 
       &:last-child {
@@ -82,5 +94,17 @@ export const Status = styled.span<StatusProps>`
     border-radius: 50%;
     background-color: ${({ theme, statuscolor }) =>
       theme[STATUS_COLOR[statuscolor]]};
+  }
+`;
+
+export const HistoryHeader = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  button {
+    width: fit-content;
+    background-color: ${({ theme }) => theme["green-700"]};
   }
 `;

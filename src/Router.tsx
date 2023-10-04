@@ -3,6 +3,7 @@ import { Route, Routes } from "react-router-dom";
 import { Home } from "./pages/home";
 import { History } from "./pages/history";
 import { DefaultLayout } from "./layouts/default";
+import { Settings } from "./pages/settings";
 
 export function Router() {
   return (
@@ -11,6 +12,7 @@ export function Router() {
         <Route path="/" element={<DefaultLayout />}>
           <Route path="/" element={<Home />} />
           <Route path="/history" element={<History />} />
+          <Route path="/settings" element={<Settings />} />
         </Route>
       </Routes>
     </>

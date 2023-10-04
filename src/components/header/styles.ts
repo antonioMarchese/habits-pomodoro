@@ -4,7 +4,7 @@ export const HeaderContainer = styled.header`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 1rem;
+  margin-bottom: 0.5rem;
 
   nav {
     display: flex;
@@ -32,6 +32,17 @@ export const HeaderContainer = styled.header`
 
       &.active {
         color: ${({ theme }) => theme["green-300"]};
+      }
+    }
+
+    .gear {
+      svg {
+        transition: transform 300ms ease-in;
+      }
+      &:hover {
+        svg {
+          transform: rotate(-90deg);
+        }
       }
     }
   }

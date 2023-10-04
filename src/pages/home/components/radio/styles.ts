@@ -1,7 +1,7 @@
 import { styled } from "styled-components";
 
 export const RadioContainer = styled.div`
-  max-width: 250px;
+  width: 250px;
   display: flex;
   flex-direction: column;
   align-items: center;

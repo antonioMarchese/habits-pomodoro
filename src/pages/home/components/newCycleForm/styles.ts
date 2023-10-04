@@ -1,4 +1,5 @@
 import { styled } from "styled-components";
+import { BaseInput } from "../../../../components/Input";
 
 export const FormContainer = styled.div`
   width: 100%;
@@ -13,26 +14,6 @@ export const FormContainer = styled.div`
   font-weight: bold;
 `;
 
-const BaseInput = styled.input`
-  background-color: transparent;
-  height: 2.5rem;
-  border: 0;
-  border-bottom: 2px solid ${({ theme }) => theme["gray-500"]};
-  font-weight: bold;
-  font-size: 1.125rem;
-  padding: 0 0.5rem;
-  color: ${({ theme }) => theme["gray-100"]};
-
-  &::placeholder {
-    color: ${({ theme }) => theme["gray-500"]};
-  }
-
-  &:focus {
-    box-shadow: none;
-    border-color: ${({ theme }) => theme["green-500"]};
-  }
-`;
-
 export const TaskInput = styled(BaseInput)`
   flex: 1;
 
@@ -42,5 +23,14 @@ export const TaskInput = styled(BaseInput)`
 `;
 
 export const MinutesInput = styled(BaseInput)`
-  width: 4rem;
+  width: 3rem;
+
+  &::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  &::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
 `;

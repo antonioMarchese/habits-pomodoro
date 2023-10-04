@@ -1,6 +1,6 @@
 import { HeaderContainer } from "./styles";
 
-import { Timer, Scroll } from "phosphor-react";
+import { Timer, Scroll, Gear } from "phosphor-react";
 
 import logoImg from "../../assets/logo.svg";
 import { NavLink } from "react-router-dom";
@@ -10,6 +10,9 @@ export function Header() {
     <HeaderContainer>
       <img src={logoImg} />
       <nav>
+        <NavLink className="gear" to="/settings" title="Configurações">
+          <Gear size={24} />
+        </NavLink>
         <NavLink to="/" title="Timer">
           <Timer size={24} />
         </NavLink>
