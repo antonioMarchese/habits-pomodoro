@@ -7,6 +7,10 @@ interface MySliderRange extends Slider.SliderRangeProps {
   $sixty?: boolean;
 }
 
+interface MySwitchProps extends Switch.PrimitiveButtonProps {
+  variant?: "success" | "default";
+}
+
 const SwitchVariants = {
   default: css`
     background-color: ${({ theme }) => theme["gray-100"]};
@@ -130,7 +134,7 @@ export const SliderThumb = styled(Slider.Thumb)`
 `;
 
 // Switch
-export const SwitchRoot = styled(Switch.Root)`
+export const SwitchRoot = styled(Switch.Root)<MySwitchProps>`
   all: unset;
   width: 42px;
   height: 25px;
