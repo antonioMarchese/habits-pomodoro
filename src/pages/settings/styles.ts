@@ -3,6 +3,10 @@ import { BaseButton } from "../../components/button";
 import * as Slider from "@radix-ui/react-slider";
 import * as Switch from "@radix-ui/react-switch";
 
+interface MySliderRange extends Slider.SliderRangeProps {
+  $sixty?: boolean;
+}
+
 const SwitchVariants = {
   default: css`
     background-color: ${({ theme }) => theme["gray-100"]};
@@ -93,7 +97,7 @@ export const SliderTrack = styled(Slider.Track)`
   cursor: pointer;
 `;
 
-export const SliderRange = styled(Slider.Range)`
+export const SliderRange = styled(Slider.Range)<MySliderRange>`
   position: absolute;
   background-color: ${({ theme }) => theme["green-700"]};
   border-bottom-left-radius: 8px;
