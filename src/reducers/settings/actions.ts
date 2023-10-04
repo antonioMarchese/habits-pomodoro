@@ -5,7 +5,6 @@ export enum actionTypes {
   CHANGE_THEME = "CHANGE_THEME",
   TOGGLE_ACTIVE_SOUND = "TOGGLE_ACTIVE_SOUND",
   CHANGE_SOUND_VOLUME = "CHANGE_SOUND_VOLUME",
-  CHANGE_TRACK_LOCATION = "CHANGE_TRACK_LOCATION",
 }
 
 export function changeWorkDuration(workDuration: number) {
@@ -52,15 +51,6 @@ export function changeSoundVolume(soundVolume: number) {
     type: actionTypes.CHANGE_SOUND_VOLUME,
     payload: {
       soundVolume,
-    },
-  };
-}
-
-export function changeTrackLocation(trackLocation: number) {
-  return {
-    type: actionTypes.CHANGE_TRACK_LOCATION,
-    payload: {
-      trackLocation,
     },
   };
 }

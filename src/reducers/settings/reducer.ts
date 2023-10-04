@@ -35,11 +35,6 @@ export function SettingsReducer(state: SettingsProps, action: any) {
         draft.soundVolume = action.payload.soundVolume;
       });
 
-    case actionTypes.CHANGE_TRACK_LOCATION:
-      return produce(state, (draft) => {
-        draft.trackLocation = action.payload.trackLocation;
-      });
-
     default:
       return state;
   }
