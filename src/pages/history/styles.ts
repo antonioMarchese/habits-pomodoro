@@ -1,5 +1,6 @@
 import { styled } from "styled-components";
 import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+import * as Collapsible from "@radix-ui/react-collapsible";
 
 export const HistoryContainer = styled.main`
   flex: 1;
@@ -26,7 +27,6 @@ export const HistoryList = styled.div`
   flex: 1;
   overflow: auto;
   margin-top: 2rem;
-
   table {
     width: 100%;
     border-collapse: collapse;
@@ -104,6 +104,7 @@ export const HistoryHeader = styled.div`
   align-items: center;
   justify-content: space-between;
   position: relative;
+  height: 3rem;
 `;
 
 export const ButtonContainer = styled.div`
@@ -117,9 +118,10 @@ export const ButtonContainer = styled.div`
 
 export const LeftHeader = styled.div`
   display: flex;
-  flex-direction: column;
+  align-items: center;
   justify-content: center;
   gap: 1rem;
+  position: relative;
 `;
 
 /* -------------------- FILTER -------------------- */
@@ -324,7 +326,7 @@ export const NavigationMenuViewport = styled(NavigationMenu.Viewport)`
 export const ViewPortPosition = styled.div`
   position: absolute;
   display: flex;
-  width: 50%;
+  width: 30%;
   top: 100%;
   right: 0;
   transform: translateX(40%);
@@ -374,4 +376,66 @@ export const Arrow = styled.div`
   height: 10px;
   transform: rotate(45deg);
   border-top-left-radius: 2px;
+`;
+
+/* -------------------- Collapsible -------------------- */
+export const CollapsibleRoot = styled(Collapsible.Root)`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+`;
+
+export const CollapsibleTrigger = styled(Collapsible.Trigger)`
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  color: ${({ theme }) => theme["gray-400"]};
+  transition: all 250ms ease-in;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    color: ${({ theme }) => theme["gray-300"]};
+  }
+`;
+
+export const CollapsibleContent = styled(Collapsible.Content)`
+  @keyframes slideRight {
+    0% {
+      width: 0;
+      opacity: 0;
+    }
+    100% {
+      width: 100%;
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideLeft {
+    0% {
+      width: 100%;
+      opacity: 1;
+    }
+    100% {
+      width: 0;
+      opacity: 0;
+    }
+  }
+  input {
+    width: 100%;
+
+    &:focus {
+      color: ${({ theme }) => theme["gray-100"]};
+    }
+  }
+
+  &[data-state="open"] {
+    animation: slideRight 300ms ease-out;
+  }
+  &[data-state="closed"] {
+    animation: slideLeft 300ms ease-out;
+  }
 `;

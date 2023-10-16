@@ -4,6 +4,7 @@ import {
   ArrowCounterClockwise,
   DotsThreeCircle,
   FileXls,
+  MagnifyingGlass,
   Trash,
 } from "phosphor-react";
 
@@ -25,6 +26,9 @@ import {
   Arrow,
   ViewPortPosition,
   NavigationMenuViewport,
+  CollapsibleRoot,
+  CollapsibleTrigger,
+  CollapsibleContent,
 } from "./styles";
 import { CyclesContext } from "../../context/cyclesContext";
 
@@ -44,12 +48,20 @@ export function History() {
   const { cycles, clearCyclesHistory, activeCycleId } =
     useContext(CyclesContext);
 
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterTitle, setFilterTitle] = useState("");
   const [filterDate, setFilterDate] = useState("");
 
   function handleCleanFilter() {
     setFilterDate("");
     setFilterTitle("");
+  }
+
+  function handleToggleFilterVisibility() {
+    if (isFilterOpen) {
+      handleCleanFilter();
+    }
+    setIsFilterOpen((prevState) => !prevState);
   }
 
   async function ExportXLSX() {
@@ -107,26 +119,36 @@ export function History() {
       <HistoryHeader>
         <LeftHeader>
           <h1>Meu Histórico</h1>
-          <FilterContainer>
-            <h2>Filtrar por</h2>
-            <BaseInput
-              value={filterTitle}
-              onChange={(e) => setFilterTitle(e.target.value)}
-              placeholder="Título"
-            />
-            <BaseInput
-              type="date"
-              value={filterDate}
-              onChange={(e) => setFilterDate(e.target.value)}
-            />
-            {(filterDate || filterTitle) && (
-              <ArrowCounterClockwise
-                size={24}
-                onClick={handleCleanFilter}
-                className="reset-filter"
-              />
-            )}
-          </FilterContainer>
+          <CollapsibleRoot
+            open={isFilterOpen}
+            onOpenChange={handleToggleFilterVisibility}
+          >
+            <CollapsibleTrigger>
+              <MagnifyingGlass size={24} />
+            </CollapsibleTrigger>
+
+            <CollapsibleContent>
+              <FilterContainer>
+                <BaseInput
+                  value={filterTitle}
+                  onChange={(e) => setFilterTitle(e.target.value)}
+                  placeholder="Título"
+                />
+                <BaseInput
+                  type="date"
+                  value={filterDate}
+                  onChange={(e) => setFilterDate(e.target.value)}
+                />
+                {(filterDate || filterTitle) && (
+                  <ArrowCounterClockwise
+                    size={48}
+                    onClick={handleCleanFilter}
+                    className="reset-filter"
+                  />
+                )}
+              </FilterContainer>
+            </CollapsibleContent>
+          </CollapsibleRoot>
         </LeftHeader>
         <ButtonContainer>
           <NavigationMenuRoot>
