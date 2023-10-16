@@ -2,7 +2,7 @@ import { HeaderContainer } from "./styles";
 
 import { Timer, Scroll, Gear } from "phosphor-react";
 
-import logoImg from "../../assets/logo.svg";
+import logoImg from "../../assets/pomodoro_timer.png";
 import { NavLink } from "react-router-dom";
 
 export function Header() {

@@ -6,6 +6,10 @@ export const HeaderContainer = styled.header`
   justify-content: space-between;
   margin-bottom: 0.5rem;
 
+  img {
+    width: 3rem;
+  }
+
   nav {
     display: flex;
     gap: 0.5rem;

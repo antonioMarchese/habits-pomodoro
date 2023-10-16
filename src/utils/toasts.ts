@@ -19,3 +19,13 @@ export const SuccessSettingsSavedToast: ToastCreationProps = {
   type: "success",
   message: "Configurações salvas!",
 };
+
+export const SuccessCyclesExportedToast: ToastCreationProps = {
+  type: "success",
+  message: "Histórico salvo!",
+};
+
+export const ErrorCyclesExportedToast: ToastCreationProps = {
+  type: "danger",
+  message: "Não foi possível salvar o histórico.",
+};

@@ -21,7 +21,9 @@ export function NewCycleForm({ disabled }: { disabled: boolean }) {
 
       <datalist id="task-sugestion">
         {cycles.length > 0 &&
-          cycles.map((cycle) => <option key={cycle.id} value={cycle.task} />)}
+          Array.from(new Set(cycles.map((cycle) => cycle.task))).map(
+            (cycle, i) => <option key={i} value={cycle} />
+          )}
       </datalist>
     </FormContainer>
   );

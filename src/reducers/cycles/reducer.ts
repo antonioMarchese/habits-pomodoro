@@ -28,6 +28,9 @@ export function CyclesReducer(state: CyclesState, action: any) {
       return produce(state, (draft) => {
         draft.activeCycleId = null;
         draft.cycles[currentCycleIndex].interruptedDate = new Date();
+        if (draft.cycles[currentCycleIndex].isInRest) {
+          draft.cycles[currentCycleIndex].amountSecondsPassedBeforePause = 0;
+        }
       });
     }
 
