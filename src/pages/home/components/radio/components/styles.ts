@@ -15,7 +15,7 @@ export const ControlContainer = styled.div`
     justify-content: center;
     background-color: transparent;
     border: none;
-    color: ${({ theme }) => theme.white};
+    color: ${({ theme }) => theme["player-button"]};
     padding: 0.5rem;
     font-size: 1.5rem;
     border-radius: 50%;
@@ -95,7 +95,7 @@ export const SliderRoot = styled(Slider.Root)`
 `;
 
 export const SliderTrack = styled(Slider.Track)`
-  background-color: ${({ theme }) => theme["gray-600"]};
+  background-color: ${({ theme }) => theme["slider-track-bg"]};
   position: relative;
   flex-grow: 1;
   border-radius: 4px;
@@ -105,7 +105,7 @@ export const SliderTrack = styled(Slider.Track)`
 
 export const SliderRange = styled(Slider.Range)`
   position: absolute;
-  background-color: white;
+  background-color: ${({ theme }) => theme["player-slider-range"]};
   border-radius: 4px;
   height: 100%;
 `;
@@ -123,7 +123,7 @@ export const SliderThumb = styled(Slider.Thumb)`
 
   transition: all 200ms ease;
   &:hover {
-    background-color: ${({ theme }) => theme["green-300"]};
+    background-color: ${({ theme }) => theme["slider-thumb-bg"]};
   }
   &:focus {
     outline: none;
@@ -195,7 +195,7 @@ export const VolumeContainer = styled.div`
 `;
 
 export const VolumeSliderTrack = styled(Slider.Track)`
-  background-color: ${({ theme }) => theme["gray-600"]};
+  background-color: ${({ theme }) => theme["slider-track-bg"]};
   position: relative;
   flex-grow: 1;
   border-radius: 4px;

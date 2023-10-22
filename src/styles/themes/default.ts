@@ -20,4 +20,35 @@ export const defaultTheme = {
   "yellow-500": "#FBA94C",
 
   "player-bg": "rgba(41, 41, 46, 0.7);",
+  "app-bg": "#121214",
+  "layout-bg": "#202024",
+
+  "input-color": "#E1E1E6",
+  "input-placeholder": "#7C7C8A",
+  "input-border": "#323238",
+  "input-color-scheme": "dark",
+
+  "text-color": "#E1E1E6",
+
+  "countdown-bg": "#29292E",
+  "countdown-box-shadow": "none",
+
+  "menu-items": "#E1E1E6",
+
+  "slider-track-bg": "#323238",
+  "slider-thumb-bg": "#8D8D99",
+  "switch-root-bg": "#E1E1E6",
+  "switch-root-bg-checked": "#323238",
+  "switch-thumb-bg": "#8D8D99",
+
+  "thead-bg": "#323238",
+  "td-bg": "#29292E",
+  "td-border": "#202024",
+
+  trigger: "#8D8D99",
+  "trigger-hover": "#C4C4CC",
+  "nav-menu-button-text": "#E1E1E6",
+
+  "player-button": "#FFF",
+  "player-slider-range": "#FFF",
 };

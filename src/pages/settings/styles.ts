@@ -13,9 +13,9 @@ interface MySwitchProps extends Switch.PrimitiveButtonProps {
 
 const SwitchVariants = {
   default: css`
-    background-color: ${({ theme }) => theme["gray-100"]};
+    background-color: ${({ theme }) => theme["switch-root-bg"]};
     &[data-state="checked"] {
-      background-color: ${({ theme }) => theme["gray-600"]};
+      background-color: ${({ theme }) => theme["switch-root-bg-checked"]};
     }
   `,
   success: css`
@@ -32,6 +32,10 @@ export const SettingsContainer = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 1rem;
+
+  h1 {
+    color: ${({ theme }) => theme["text-color"]};
+  }
 
   hr {
     width: 50%;
@@ -71,6 +75,8 @@ export const OptionsTitleContainer = styled.div`
   small {
     color: ${({ theme }) => theme["gray-500"]};
   }
+
+  color: ${({ theme }) => theme["text-color"]};
 `;
 
 // Settings Slider
@@ -79,6 +85,8 @@ export const SliderContainer = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
+
+  color: ${({ theme }) => theme["text-color"]};
 `;
 
 export const SliderRoot = styled(Slider.Root)`
@@ -93,7 +101,7 @@ export const SliderRoot = styled(Slider.Root)`
 `;
 
 export const SliderTrack = styled(Slider.Track)`
-  background-color: ${({ theme }) => theme["gray-600"]};
+  background-color: ${({ theme }) => theme["slider-track-bg"]};
   position: relative;
   flex-grow: 1;
   border-radius: 8px;
@@ -116,7 +124,7 @@ export const SliderThumb = styled(Slider.Thumb)`
   display: block;
   width: 1rem;
   height: 1rem;
-  background-color: ${({ theme }) => theme["gray-400"]};
+  background-color: ${({ theme }) => theme["slider-thumb-bg"]};
   border-radius: 10px;
 
   cursor: ${(props) => (props["aria-disabled"] ? "default" : "pointer")};
@@ -149,7 +157,7 @@ export const SwitchThumb = styled(Switch.Thumb)`
   display: block;
   width: 21px;
   height: 21px;
-  background-color: ${({ theme }) => theme["gray-400"]};
+  background-color: ${({ theme }) => theme["switch-thumb-bg"]};
   border-radius: 99999px;
   transition: transform 100ms;
   transform: translateX(2px);

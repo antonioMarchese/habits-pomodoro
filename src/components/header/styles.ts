@@ -23,7 +23,7 @@ export const HeaderContainer = styled.header`
       align-items: center;
       justify-content: center;
 
-      color: ${({ theme }) => theme["gray-100"]};
+      color: ${({ theme }) => theme["menu-items"]};
 
       border-top: 3px solid transparent;
       border-bottom: 3px solid transparent;

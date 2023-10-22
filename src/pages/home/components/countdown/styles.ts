@@ -4,14 +4,15 @@ export const CountdownContainer = styled.div`
   font-family: "Roboto Mono", monospace;
   font-size: 5rem;
   line-height: 8rem;
-  color: ${({ theme }) => theme["gray-100"]};
+  color: ${({ theme }) => theme["text-color"]};
   width: 100%;
 
   display: flex;
   gap: 0.5rem;
 
   span {
-    background-color: ${({ theme }) => theme["gray-700"]};
+    background-color: ${({ theme }) => theme["countdown-bg"]};
+    box-shadow: ${({ theme }) => theme["countdown-box-shadow"]};
     flex: 1;
     display: flex;
     align-items: center;

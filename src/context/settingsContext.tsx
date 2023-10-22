@@ -20,6 +20,8 @@ export interface SettingsProps {
 
 interface SettingsContextProviderProps {
   children: React.ReactNode; // Qualquer jsx/html válido
+  theme: "dark" | "light";
+  setTheme: (theme: any) => void;
 }
 
 interface SettingsContextProps {
@@ -53,6 +55,8 @@ export const SettingsContext = createContext({} as SettingsContextProps);
 
 export function SettingsContextProvider({
   children,
+  theme,
+  setTheme,
 }: SettingsContextProviderProps) {
   const [settingsState, dispatch] = useReducer(
     SettingsReducer,
@@ -80,6 +84,9 @@ export function SettingsContextProvider({
 
   function changeCurrentTheme() {
     dispatch(changeTheme());
+    setTheme((prevState: "dark" | "light") =>
+      prevState === "dark" ? "light" : "dark"
+    );
   }
 
   function changeActiveSound() {
@@ -95,7 +102,7 @@ export function SettingsContextProvider({
       workDuration: settingsState.workDuration,
       restDuration: settingsState.restDuration,
       roundsAmount: settingsState.roundsAmount,
-      theme: settingsState.theme,
+      theme,
       activeSound: settingsState.activeSound,
       soundVolume: settingsState.soundVolume ?? 60,
     };

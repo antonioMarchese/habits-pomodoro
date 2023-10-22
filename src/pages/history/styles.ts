@@ -19,7 +19,7 @@ export const HistoryContainer = styled.main`
 
   h1 {
     font-size: 1.5rem;
-    color: ${({ theme }) => theme["gray-100"]};
+    color: ${({ theme }) => theme["text-color"]};
   }
 `;
 
@@ -33,7 +33,8 @@ export const HistoryList = styled.div`
     min-width: 600px;
 
     th {
-      background-color: ${({ theme }) => theme["gray-600"]};
+      background-color: ${({ theme }) => theme["thead-bg"]};
+      color: ${({ theme }) => theme["text-color"]};
       padding: 1rem;
       text-align: center;
       font-size: 0.875rem;
@@ -52,8 +53,9 @@ export const HistoryList = styled.div`
     }
 
     td {
-      background-color: ${({ theme }) => theme["gray-700"]};
-      border-top: 4px solid ${({ theme }) => theme["gray-800"]};
+      background-color: ${({ theme }) => theme["td-bg"]};
+      color: ${({ theme }) => theme["text-color"]};
+      border-top: 4px solid ${({ theme }) => theme["td-border"]};
       padding: 1rem;
 
       font-size: 0.875rem;
@@ -132,16 +134,16 @@ export const FilterContainer = styled.div`
   justify-content: flex-start;
 
   gap: 1rem;
-  color: ${({ theme }) => theme["gray-300"]};
+  color: ${({ theme }) => theme["text-color"]};
 
   input {
-    color: ${({ theme }) => theme["gray-500"]};
-    color-scheme: dark;
+    color: ${({ theme }) => theme["input-color"]};
+    color-scheme: ${({ theme }) => theme["input-color-scheme"]};
   }
 
   .reset-filter {
     cursor: pointer;
-    color: ${({ theme }) => theme["gray-400"]};
+    color: ${({ theme }) => theme["text-color"]};
     transition: all 250ms linear;
 
     &:hover {
@@ -171,11 +173,11 @@ export const NavigationMenuList = styled(NavigationMenu.List)`
 export const NavigationMenuTrigger = styled(NavigationMenu.Trigger)`
   all: unset;
   cursor: pointer;
-  color: ${({ theme }) => theme["gray-400"]};
+  color: ${({ theme }) => theme["trigger"]};
   transition: all 250ms ease-in;
 
   &:hover {
-    color: ${({ theme }) => theme["gray-300"]};
+    color: ${({ theme }) => theme["trigger-hover"]};
   }
 `;
 
@@ -205,7 +207,7 @@ export const NavigationMenuContent = styled(NavigationMenu.Content)`
     background-color: ${({ theme }) => theme["gray-600"]};
     opacity: 0.7;
     transition: all 250ms ease-in;
-    color: ${({ theme }) => theme["gray-300"]} !important;
+    color: ${({ theme }) => theme["nav-menu-button-text"]} !important;
 
     &:hover {
       opacity: 1;
@@ -390,7 +392,7 @@ export const CollapsibleTrigger = styled(Collapsible.Trigger)`
   cursor: pointer;
   background-color: transparent;
   border: none;
-  color: ${({ theme }) => theme["gray-400"]};
+  color: ${({ theme }) => theme["trigger"]};
   transition: all 250ms ease-in;
 
   display: flex;
@@ -398,7 +400,7 @@ export const CollapsibleTrigger = styled(Collapsible.Trigger)`
   justify-content: center;
 
   &:hover {
-    color: ${({ theme }) => theme["gray-300"]};
+    color: ${({ theme }) => theme["trigger-hover"]};
   }
 `;
 
@@ -428,7 +430,7 @@ export const CollapsibleContent = styled(Collapsible.Content)`
     width: 100%;
 
     &:focus {
-      color: ${({ theme }) => theme["gray-100"]};
+      color: ${({ theme }) => theme["text-color"]};
     }
   }
 
