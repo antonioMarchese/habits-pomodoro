@@ -80,8 +80,10 @@ export default function ChartContainer() {
         if (new Date(cycle.startDate).getDay() === weekDayNumber) {
           const totalMinutes =
             cycle.rounds * cycle.minutesAmount +
-            (cycle.amountSecondsPassedBeforePause ?? 0);
-          return Math.round((acc + totalMinutes / 3600) * 100) / 100;
+            (cycle.amountSecondsPassedBeforePause
+              ? cycle.amountSecondsPassedBeforePause / 60
+              : 0);
+          return Math.round((acc + totalMinutes / 60) * 100) / 100;
         }
         return acc;
       }, 0)
@@ -107,8 +109,10 @@ export default function ChartContainer() {
         if (new Date(cycle.startDate).getDate() === monthDay) {
           const totalMinutes =
             cycle.rounds * cycle.minutesAmount +
-            (cycle.amountSecondsPassedBeforePause ?? 0);
-          return Math.round((acc + totalMinutes / 3600) * 100) / 100;
+            (cycle.amountSecondsPassedBeforePause
+              ? cycle.amountSecondsPassedBeforePause / 60
+              : 0);
+          return Math.round((acc + totalMinutes / 60) * 100) / 100;
         }
         return acc;
       }, 0)
