@@ -1,38 +1,11 @@
 import { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  ArrowCounterClockwise,
-  DotsThreeCircle,
-  FileXls,
-  MagnifyingGlass,
-  Trash,
-} from "phosphor-react";
 
 import { differenceInDays } from "date-fns";
 
-import {
-  ButtonContainer,
-  HistoryContainer,
-  HistoryHeader,
-  HistoryList,
-  LeftHeader,
-  Status,
-  NavigationMenuRoot,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuContent,
-  FilterContainer,
-  NavigationMenuIndicator,
-  Arrow,
-  ViewPortPosition,
-  NavigationMenuViewport,
-  CollapsibleRoot,
-  CollapsibleTrigger,
-  CollapsibleContent,
-} from "./styles";
+import { HistoryContainer } from "./styles";
 import { CyclesContext } from "../../context/cyclesContext";
 
-import { BaseButton } from "../../components/button";
 import formatWorkDuration from "../../utils/formatWorkDuration";
 import formatCycleCreatedAt from "../../utils/formatCycleCreatedAt";
 import { ExportExcelData } from "../../utils/excelExporter";
@@ -41,30 +14,32 @@ import {
   ErrorCyclesExportedToast,
   SuccessCyclesExportedToast,
 } from "../../utils/toasts";
-import { BaseInput } from "../../components/Input";
-import * as NavigationMenu from "@radix-ui/react-navigation-menu";
+
+import Header from "./header";
+import HistoryTable from "./historyTable";
+import ChartContainer from "./chartsContainer";
 
 export function History() {
-  const { cycles, clearCyclesHistory, activeCycleId } =
-    useContext(CyclesContext);
+  const { cycles } = useContext(CyclesContext);
 
-  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [filterTitle, setFilterTitle] = useState("");
   const [filterDate, setFilterDate] = useState("");
+  const [activeSection, setActiveSection] = useState<"table" | "charts">(
+    "table"
+  );
 
   function handleCleanFilter() {
     setFilterDate("");
     setFilterTitle("");
   }
 
-  function handleToggleFilterVisibility() {
-    if (isFilterOpen) {
-      handleCleanFilter();
-    }
-    setIsFilterOpen((prevState) => !prevState);
+  function handleToggleActiveSection() {
+    setActiveSection((prevState) =>
+      prevState === "charts" ? "table" : "charts"
+    );
   }
 
-  async function ExportXLSX() {
+  async function exportXLSX() {
     if (filteredCycles.length > 0) {
       const cyclesToExport = filteredCycles.map((cycle) => ({
         Jornada: cycle.task,
@@ -91,7 +66,7 @@ export function History() {
 
   const filteredCycles = cycles.filter(
     (cycle) =>
-      cycle.task.includes(filterTitle) &&
+      cycle.task.toLowerCase().includes(filterTitle.toLowerCase()) &&
       (filterDate
         ? differenceInDays(
             new Date(String(cycle.startDate).slice(0, 10)),
@@ -99,9 +74,6 @@ export function History() {
           ) === 0
         : true)
   );
-
-  const isClearButtonDisabled =
-    cycles.length === 1 && cycles[0].id === activeCycleId;
 
   if (cycles.length === 0)
     return (
@@ -116,120 +88,20 @@ export function History() {
     );
   return (
     <HistoryContainer>
-      <HistoryHeader>
-        <LeftHeader>
-          <h1>Meu Histórico</h1>
-          <CollapsibleRoot
-            open={isFilterOpen}
-            onOpenChange={handleToggleFilterVisibility}
-          >
-            <CollapsibleTrigger>
-              <MagnifyingGlass size={24} />
-            </CollapsibleTrigger>
-
-            <CollapsibleContent>
-              <FilterContainer>
-                <BaseInput
-                  value={filterTitle}
-                  onChange={(e) => setFilterTitle(e.target.value)}
-                  placeholder="Título"
-                />
-                <BaseInput
-                  type="date"
-                  value={filterDate}
-                  onChange={(e) => setFilterDate(e.target.value)}
-                />
-                {(filterDate || filterTitle) && (
-                  <ArrowCounterClockwise
-                    size={48}
-                    onClick={handleCleanFilter}
-                    className="reset-filter"
-                  />
-                )}
-              </FilterContainer>
-            </CollapsibleContent>
-          </CollapsibleRoot>
-        </LeftHeader>
-        <ButtonContainer>
-          <NavigationMenuRoot>
-            <NavigationMenuList>
-              <NavigationMenu.Item>
-                <NavigationMenuTrigger>
-                  <DotsThreeCircle size={24} />
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <BaseButton
-                    disabled={cycles.length === 0}
-                    onClick={() => ExportXLSX()}
-                    className="first-child"
-                  >
-                    <FileXls size={24} />
-                    Gerar relatório
-                  </BaseButton>
-                  <BaseButton
-                    disabled={isClearButtonDisabled}
-                    onClick={clearCyclesHistory}
-                    className="last-child"
-                  >
-                    <Trash size={24} />
-                    Limpar histórico
-                  </BaseButton>
-                </NavigationMenuContent>
-              </NavigationMenu.Item>
-
-              <NavigationMenuIndicator>
-                <Arrow />
-              </NavigationMenuIndicator>
-            </NavigationMenuList>
-
-            <ViewPortPosition>
-              <NavigationMenuViewport />
-            </ViewPortPosition>
-          </NavigationMenuRoot>
-        </ButtonContainer>
-      </HistoryHeader>
-
-      <HistoryList>
-        <table>
-          <thead>
-            <tr>
-              <th>Jornada</th>
-              <th>Tempo de trabalho</th>
-              <th>Rounds</th>
-              <th>Início</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {filteredCycles.map((cycle) => (
-              <tr key={cycle.id}>
-                <td>{cycle.task}</td>
-                <td>
-                  {cycle.id === activeCycleId
-                    ? `${cycle.minutesAmount} minutos`
-                    : formatWorkDuration(
-                        cycle.rounds * cycle.minutesAmount,
-                        cycle.amountSecondsPassedBeforePause
-                      )}
-                </td>
-                <td>{cycle.rounds}</td>
-                <td>{formatCycleCreatedAt(cycle.startDate)}</td>
-                <td>
-                  {cycle.finishedDate && (
-                    <Status statuscolor="green">Concluído</Status>
-                  )}
-                  {cycle.interruptedDate && (
-                    <Status statuscolor="red">Interrompido</Status>
-                  )}
-                  {!cycle.finishedDate && !cycle.interruptedDate && (
-                    <Status statuscolor="yellow">Em andamento</Status>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </HistoryList>
+      <Header
+        activeSection={activeSection}
+        exportXLSX={exportXLSX}
+        filterDate={filterDate}
+        filterTitle={filterTitle}
+        handleCleanFilter={handleCleanFilter}
+        setFilterDate={setFilterDate}
+        setFilterTitle={setFilterTitle}
+        toggleActiveSection={handleToggleActiveSection}
+      />
+      {activeSection === "table" && (
+        <HistoryTable filteredCycles={filteredCycles} />
+      )}
+      {activeSection === "charts" && <ChartContainer />}
     </HistoryContainer>
   );
 }

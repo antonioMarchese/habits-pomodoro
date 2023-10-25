@@ -124,6 +124,10 @@ export const LeftHeader = styled.div`
   justify-content: center;
   gap: 1rem;
   position: relative;
+
+  svg {
+    cursor: pointer;
+  }
 `;
 
 /* -------------------- FILTER -------------------- */
@@ -439,5 +443,27 @@ export const CollapsibleContent = styled(Collapsible.Content)`
   }
   &[data-state="closed"] {
     animation: slideLeft 300ms ease-out;
+  }
+`;
+
+export const ChartsContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+`;
+
+export const ReportChartContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex: 1;
+
+  canvas {
+    max-width: 80%;
+    max-height: 350px;
   }
 `;
