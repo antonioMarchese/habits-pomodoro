@@ -11,7 +11,7 @@ import {
   stopRest,
 } from "../reducers/cycles/actions";
 
-import { differenceInSeconds } from "date-fns";
+import { differenceInSeconds, isBefore } from "date-fns";
 import CreateToast from "../utils/createToast";
 import {
   SuccessCycleFinishedToast,
@@ -170,7 +170,9 @@ export function CyclesContextProvider({
   return (
     <CyclesContext.Provider
       value={{
-        cycles,
+        cycles: cycles.sort((a, b) =>
+          isBefore(new Date(a.startDate), new Date(b.startDate)) ? 1 : -1
+        ),
         activeCycle,
         activeCycleId,
         amountSecondsPassed,
