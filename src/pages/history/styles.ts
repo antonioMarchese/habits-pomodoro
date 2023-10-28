@@ -25,8 +25,14 @@ export const HistoryContainer = styled.main`
 
 export const HistoryList = styled.div`
   flex: 1;
-  overflow: auto;
+  overflow-x: auto;
+  overflow-y: hidden;
   margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+
   table {
     width: 100%;
     border-collapse: collapse;
@@ -465,5 +471,32 @@ export const ReportChartContainer = styled.div`
   canvas {
     max-width: 80%;
     max-height: 350px;
+  }
+`;
+
+export const Paginator = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  height: 20px;
+
+  button {
+    background-color: transparent;
+    width: fit-content;
+    padding: 0;
+    opacity: 0.7;
+    color: ${({ theme }) => theme["gray-100"]};
+
+    transition: all 250ms ease;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.4 !important;
+    }
   }
 `;
