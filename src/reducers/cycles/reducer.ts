@@ -4,6 +4,7 @@ import { CycleProps } from "../../context/cyclesContext";
 import { actionTypes } from "./actions";
 
 import sub from "date-fns/sub";
+import { isBefore } from "date-fns";
 
 interface CyclesState {
   cycles: CycleProps[];
@@ -13,8 +14,19 @@ interface CyclesState {
 export function CyclesReducer(state: CyclesState, action: any) {
   switch (action.type) {
     case actionTypes.ADD_NEW_CYCLE:
+      let isCyclesSorted = false;
+      if (state.cycles.length > 1) {
+        isCyclesSorted = isBefore(
+          new Date(state.cycles[state.cycles.length - 1].startDate),
+          new Date(state.cycles[0].startDate)
+        );
+      }
       return produce(state, (draft) => {
-        draft.cycles.push(action.payload.newCycle);
+        if (isCyclesSorted) {
+          draft.cycles.unshift(action.payload.newCycle);
+        } else {
+          draft.cycles.push(action.payload.newCycle);
+        }
         draft.activeCycleId = action.payload.newCycle.id;
       });
 
@@ -26,8 +38,15 @@ export function CyclesReducer(state: CyclesState, action: any) {
       if (currentCycleIndex < 0) return state;
 
       return produce(state, (draft) => {
+        if (
+          action.payload.settingsRounds ===
+          draft.cycles[currentCycleIndex].rounds
+        ) {
+          draft.cycles[currentCycleIndex].finishedDate = new Date();
+        } else {
+          draft.cycles[currentCycleIndex].interruptedDate = new Date();
+        }
         draft.activeCycleId = null;
-        draft.cycles[currentCycleIndex].interruptedDate = new Date();
         if (draft.cycles[currentCycleIndex].isInRest) {
           draft.cycles[currentCycleIndex].amountSecondsPassedBeforePause = 0;
         }
@@ -103,6 +122,26 @@ export function CyclesReducer(state: CyclesState, action: any) {
         draft.cycles[currentCycleIndex].roundStartDate = new Date();
         draft.cycles[currentCycleIndex].rounds++;
       });
+    }
+
+    case actionTypes.SORT_CYCLES: {
+      if (state.cycles.length > 1) {
+        const isCyclesSorted = isBefore(
+          new Date(state.cycles[state.cycles.length - 1].startDate),
+          new Date(state.cycles[0].startDate)
+        );
+
+        return produce(state, (draft) => {
+          draft.cycles = isCyclesSorted
+            ? draft.cycles.sort((a, b) =>
+                isBefore(new Date(a.startDate), new Date(b.startDate)) ? -1 : 1
+              )
+            : draft.cycles.sort((a, b) =>
+                isBefore(new Date(a.startDate), new Date(b.startDate)) ? 1 : -1
+              );
+        });
+      }
+      return state;
     }
 
     case actionTypes.CLEAR_CYCLES: {
