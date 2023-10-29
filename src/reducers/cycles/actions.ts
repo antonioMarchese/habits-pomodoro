@@ -9,6 +9,7 @@ export enum actionTypes {
   MARK_ROUND_AS_FINISHED = "MARK_ROUND_AS_FINISHED",
   MARK_REST_AS_FINISHED = "MARK_REST_AS_FINISHED",
   CLEAR_CYCLES = "CLEAR_CYCLES",
+  SORT_CYCLES = "SORT_CYCLES",
 }
 
 export function addNewCycleAction(newCycle: CycleProps) {
@@ -65,5 +66,11 @@ export function stopRest() {
 export function clearCycles() {
   return {
     type: actionTypes.CLEAR_CYCLES,
+  };
+}
+
+export function sortCycles() {
+  return {
+    type: actionTypes.SORT_CYCLES,
   };
 }

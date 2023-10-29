@@ -38,6 +38,25 @@ export const HistoryList = styled.div`
     border-collapse: collapse;
     min-width: 600px;
 
+    .head-filter {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 0;
+
+      border-radius: 8px;
+
+      cursor: pointer;
+      opacity: 0.7;
+      transition: all 200ms ease-in;
+
+      &:hover {
+        background-color: ${({ theme }) => theme["gray-700"]};
+        opacity: 1;
+      }
+    }
+
     th {
       background-color: ${({ theme }) => theme["thead-bg"]};
       color: ${({ theme }) => theme["text-color"]};
@@ -478,8 +497,12 @@ export const Paginator = styled.div`
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: space-between;
   height: 20px;
+
+  ${ButtonContainer} {
+    gap: 0;
+  }
 
   button {
     background-color: transparent;
@@ -499,4 +522,11 @@ export const Paginator = styled.div`
       opacity: 0.4 !important;
     }
   }
+`;
+
+export const TotalIndicator = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 4px;
 `;

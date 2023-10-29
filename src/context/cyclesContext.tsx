@@ -1,4 +1,10 @@
-import React, { createContext, useEffect, useReducer, useState } from "react";
+import React, {
+  createContext,
+  useContext,
+  useEffect,
+  useReducer,
+  useState,
+} from "react";
 import { CyclesReducer } from "../reducers/cycles/reducer";
 import {
   addNewCycleAction,
@@ -8,16 +14,18 @@ import {
   markRundFinished,
   pauseCycle,
   playCycle,
+  sortCycles,
   stopRest,
 } from "../reducers/cycles/actions";
 
-import { differenceInSeconds, isBefore } from "date-fns";
+import { differenceInSeconds } from "date-fns";
 import CreateToast from "../utils/createToast";
 import {
   SuccessCycleFinishedToast,
   SuccessCyclesCleanedToast,
   SuccessRoundFinishedToast,
 } from "../utils/toasts";
+import { SettingsContext } from "./settingsContext";
 
 interface CreateCycleProps {
   task: string;
@@ -55,6 +63,7 @@ interface CyclesContextProps {
   pauseCurrentCycle: () => void;
   continueCycle: () => void;
   clearCyclesHistory: () => void;
+  handleSortCycles: () => void;
 }
 
 interface CyclesContextProviderProps {
@@ -84,6 +93,7 @@ export function CyclesContextProvider({
   const { cycles, activeCycleId } = cyclesState;
   const activeCycle = cycles.find((cycle) => cycle.id === activeCycleId);
   const [shouldPlayAlarm, setShouldPlayAlarm] = useState(false);
+  const { roundsAmount } = useContext(SettingsContext);
 
   // Quando tiver um ciclo ativo não deve tocar
 
@@ -114,7 +124,7 @@ export function CyclesContextProvider({
   }
 
   function interruptCycle() {
-    dispatch(interrupCycle(amountSecondsPassed));
+    dispatch(interrupCycle(roundsAmount));
   }
 
   function pauseCurrentCycle() {
@@ -161,6 +171,10 @@ export function CyclesContextProvider({
     setAmountSecondsPassed(secondsToSet);
   }
 
+  function handleSortCycles() {
+    dispatch(sortCycles());
+  }
+
   useEffect(() => {
     const stateJSON = JSON.stringify(cyclesState);
 
@@ -170,9 +184,7 @@ export function CyclesContextProvider({
   return (
     <CyclesContext.Provider
       value={{
-        cycles: cycles.sort((a, b) =>
-          isBefore(new Date(a.startDate), new Date(b.startDate)) ? 1 : -1
-        ),
+        cycles,
         activeCycle,
         activeCycleId,
         amountSecondsPassed,
@@ -186,6 +198,7 @@ export function CyclesContextProvider({
         pauseCurrentCycle,
         continueCycle,
         clearCyclesHistory,
+        handleSortCycles,
       }}
     >
       {children}

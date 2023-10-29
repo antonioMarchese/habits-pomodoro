@@ -2,17 +2,27 @@ import { useContext, useState } from "react";
 import { CycleProps, CyclesContext } from "../../context/cyclesContext";
 import formatCycleCreatedAt from "../../utils/formatCycleCreatedAt";
 import formatWorkDuration from "../../utils/formatWorkDuration";
-import { HistoryList, Paginator, Status } from "./styles";
-import { CaretLeft, CaretRight } from "phosphor-react";
+import {
+  ButtonContainer,
+  HistoryList,
+  Paginator,
+  Status,
+  TotalIndicator,
+} from "./styles";
+import { ArrowsDownUp, CaretLeft, CaretRight, Faders } from "phosphor-react";
 import { BaseButton } from "../../components/button";
 
-const ITEMS_PER_PAGE = 10;
+const ITEMS_PER_PAGE = 5;
 
 interface HistoryTableProps {
   filteredCycles: CycleProps[];
+  sortCycles: () => void;
 }
 
-export default function HistoryTable({ filteredCycles }: HistoryTableProps) {
+export default function HistoryTable({
+  filteredCycles,
+  sortCycles,
+}: HistoryTableProps) {
   const { activeCycleId } = useContext(CyclesContext);
   const [cyclesOffset, setCyclesOffset] = useState(0);
 
@@ -20,12 +30,18 @@ export default function HistoryTable({ filteredCycles }: HistoryTableProps) {
 
   const currentCycles = filteredCycles.slice(cyclesOffset, endOffset);
 
+  const totalCycles = filteredCycles.length;
+
   function handleSkipPage() {
-    setCyclesOffset((prevState) => prevState + ITEMS_PER_PAGE);
+    if (cyclesOffset <= filteredCycles.length) {
+      setCyclesOffset((prevState) => prevState + ITEMS_PER_PAGE);
+    }
   }
 
   function handleBackPage() {
-    setCyclesOffset((prevState) => prevState - ITEMS_PER_PAGE);
+    if (cyclesOffset > 0) {
+      setCyclesOffset((prevState) => prevState - ITEMS_PER_PAGE);
+    }
   }
 
   return (
@@ -36,7 +52,11 @@ export default function HistoryTable({ filteredCycles }: HistoryTableProps) {
             <th>Jornada</th>
             <th>Tempo de trabalho</th>
             <th>Rounds</th>
-            <th>Início</th>
+            <th>
+              <div className="head-filter" onClick={sortCycles}>
+                Início <ArrowsDownUp size={18} />
+              </div>
+            </th>
             <th>Status</th>
           </tr>
         </thead>
@@ -71,12 +91,18 @@ export default function HistoryTable({ filteredCycles }: HistoryTableProps) {
       </table>
 
       <Paginator>
-        <BaseButton disabled={cyclesOffset === 0}>
-          <CaretLeft size={24} onClick={handleBackPage} />
-        </BaseButton>
-        <BaseButton disabled={endOffset >= filteredCycles.length}>
-          <CaretRight size={24} onClick={handleSkipPage} />
-        </BaseButton>
+        <TotalIndicator>
+          <Faders size={18} />
+          <small>{totalCycles} ciclos encontrados</small>
+        </TotalIndicator>
+        <ButtonContainer>
+          <BaseButton disabled={cyclesOffset === 0}>
+            <CaretLeft size={24} onClick={handleBackPage} />
+          </BaseButton>
+          <BaseButton disabled={endOffset >= filteredCycles.length}>
+            <CaretRight size={24} onClick={handleSkipPage} />
+          </BaseButton>
+        </ButtonContainer>
       </Paginator>
     </HistoryList>
   );

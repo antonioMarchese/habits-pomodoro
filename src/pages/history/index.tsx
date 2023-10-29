@@ -20,7 +20,7 @@ import HistoryTable from "./historyTable";
 import ChartContainer from "./chartsContainer";
 
 export function History() {
-  const { cycles } = useContext(CyclesContext);
+  const { cycles, handleSortCycles } = useContext(CyclesContext);
 
   const [filterTitle, setFilterTitle] = useState("");
   const [filterDate, setFilterDate] = useState("");
@@ -99,7 +99,10 @@ export function History() {
         toggleActiveSection={handleToggleActiveSection}
       />
       {activeSection === "table" && (
-        <HistoryTable filteredCycles={filteredCycles} />
+        <HistoryTable
+          filteredCycles={filteredCycles}
+          sortCycles={handleSortCycles}
+        />
       )}
       {activeSection === "charts" && <ChartContainer />}
     </HistoryContainer>
