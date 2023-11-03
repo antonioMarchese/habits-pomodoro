@@ -18,6 +18,7 @@ import {
 import Header from "./header";
 import HistoryTable from "./historyTable";
 import ChartContainer from "./chartsContainer";
+import CalculateTotalMinutes from "../../utils/calculateTotalMinutes";
 
 export function History() {
   const { cycles, handleSortCycles } = useContext(CyclesContext);
@@ -75,6 +76,21 @@ export function History() {
         : true)
   );
 
+  const amountTimeWorked = formatWorkDuration(
+    filteredCycles.reduce(
+      (acc, cycle) =>
+        acc +
+        Math.floor(
+          CalculateTotalMinutes(
+            cycle.rounds * cycle.minutesAmount,
+            cycle.amountSecondsPassedBeforePause
+          ) * 100
+        ) /
+          100,
+      0
+    )
+  );
+
   if (cycles.length === 0)
     return (
       <HistoryContainer>
@@ -101,6 +117,7 @@ export function History() {
       {activeSection === "table" && (
         <HistoryTable
           filteredCycles={filteredCycles}
+          amountTimeWorked={amountTimeWorked}
           sortCycles={handleSortCycles}
         />
       )}
