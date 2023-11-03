@@ -17,19 +17,20 @@ import {
   Faders,
 } from "phosphor-react";
 import { BaseButton } from "../../components/button";
-import CalculateTotalMinutes from "../../utils/calculateTotalMinutes";
 import { IndicatorContainer } from "../../components/indicator";
 
 const ITEMS_PER_PAGE = 5;
 
 interface HistoryTableProps {
   filteredCycles: CycleProps[];
+  amountTimeWorked: string;
   sortCycles: () => void;
 }
 
 export default function HistoryTable({
   filteredCycles,
   sortCycles,
+  amountTimeWorked,
 }: HistoryTableProps) {
   const { activeCycleId } = useContext(CyclesContext);
   const [cyclesOffset, setCyclesOffset] = useState(0);
@@ -39,21 +40,6 @@ export default function HistoryTable({
   const currentCycles = filteredCycles.slice(cyclesOffset, endOffset);
 
   const totalCycles = filteredCycles.length;
-
-  const amountTimeWorked = formatWorkDuration(
-    currentCycles.reduce(
-      (acc, cycle) =>
-        acc +
-        Math.floor(
-          CalculateTotalMinutes(
-            cycle.rounds * cycle.minutesAmount,
-            cycle.amountSecondsPassedBeforePause
-          ) * 100
-        ) /
-          100,
-      0
-    )
-  );
 
   function handleSkipPage() {
     if (cyclesOffset <= filteredCycles.length) {
