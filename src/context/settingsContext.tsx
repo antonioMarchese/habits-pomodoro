@@ -49,6 +49,8 @@ const defaultSettings: SettingsProps = {
   soundVolume: 60,
 };
 
+export const MAX_ROUNDS = 6;
+
 export const localStorageKey = "@habits-pomodoro:settings-1.0.0";
 
 export const SettingsContext = createContext({} as SettingsContextProps);

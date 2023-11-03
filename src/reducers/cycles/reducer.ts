@@ -5,6 +5,7 @@ import { actionTypes } from "./actions";
 
 import sub from "date-fns/sub";
 import { isBefore } from "date-fns";
+import { MAX_ROUNDS } from "../../context/settingsContext";
 
 interface CyclesState {
   cycles: CycleProps[];
@@ -40,7 +41,8 @@ export function CyclesReducer(state: CyclesState, action: any) {
       return produce(state, (draft) => {
         if (
           action.payload.settingsRounds ===
-          draft.cycles[currentCycleIndex].rounds
+            draft.cycles[currentCycleIndex].rounds ||
+          action.payload.settingsRounds === MAX_ROUNDS
         ) {
           draft.cycles[currentCycleIndex].finishedDate = new Date();
         } else {
