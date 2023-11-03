@@ -2,7 +2,10 @@ import { useContext, useEffect } from "react";
 import { CountdownContainer, TimerSeparator } from "./styles";
 import { differenceInSeconds } from "date-fns";
 import { CyclesContext } from "../../../../context/cyclesContext";
-import { SettingsContext } from "../../../../context/settingsContext";
+import {
+  MAX_ROUNDS,
+  SettingsContext,
+} from "../../../../context/settingsContext";
 
 export function CountDown() {
   const {
@@ -34,6 +37,10 @@ export function CountDown() {
     ? String(Math.floor(amountSecondsPassed % 60)).padStart(2, "0")
     : "00";
 
+  const keepCounting = activeCycle
+    ? activeCycle.rounds < roundsAmount || roundsAmount === MAX_ROUNDS
+    : false;
+
   useEffect(() => {
     if (activeCycle) {
       document.title = `${activeCycle.task} - ${minutes}:${seconds}`;
@@ -52,12 +59,9 @@ export function CountDown() {
           new Date(activeCycle.roundStartDate)
         );
         if (timeDelta > secondsAmount) {
-          if (!activeCycle.isInRest && activeCycle.rounds < roundsAmount) {
+          if (!activeCycle.isInRest && keepCounting) {
             markCurrentRoundAsFinished();
-          } else if (
-            activeCycle.isInRest &&
-            activeCycle.rounds < roundsAmount
-          ) {
+          } else if (activeCycle.isInRest && keepCounting) {
             setStopRest();
           } else {
             markCurrentCycleAsFinished();

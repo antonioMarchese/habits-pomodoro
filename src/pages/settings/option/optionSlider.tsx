@@ -9,6 +9,7 @@ import {
 interface SliderOptionsProps {
   range: number;
   optionValue: number;
+  maxValue?: string;
   setValue: (value: number) => void;
   min?: number;
   disabled?: boolean;
@@ -22,10 +23,11 @@ export default function OptionSlider({
   min,
   disabled,
   step = 5,
+  maxValue,
 }: SliderOptionsProps) {
   return (
     <SliderContainer>
-      <p>{optionValue}</p>
+      <p>{maxValue ?? optionValue}</p>
       <SliderRoot
         defaultValue={[optionValue]}
         max={range}

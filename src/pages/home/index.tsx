@@ -21,7 +21,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import * as zod from "zod";
 import { CyclesContext } from "../../context/cyclesContext";
-import { SettingsContext } from "../../context/settingsContext";
+import { MAX_ROUNDS, SettingsContext } from "../../context/settingsContext";
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, "Informe o nome do projeto"),
@@ -70,7 +70,8 @@ export function Home() {
         <RoundContainer>
           <RoundContainerHeader>
             <Clock size={24} />
-            {activeCycle.rounds} / {roundsAmount}
+            {activeCycle.rounds} /{" "}
+            {roundsAmount === MAX_ROUNDS ? "♾️" : roundsAmount}
           </RoundContainerHeader>
           <RoundSliderRoot
             defaultValue={[0]}

@@ -24,7 +24,7 @@ const OPTIONS = [
   },
   {
     title: "Número de rounds",
-    range: 5,
+    range: 6,
   },
 ];
 
@@ -116,6 +116,8 @@ export function Settings() {
           optionValue={workDuration}
           setValue={handleSetWorkDuration}
           disabled={Boolean(activeCycleId)}
+          min={15}
+          step={5}
         />
       </SettingsOption.Root>
 
@@ -129,6 +131,7 @@ export function Settings() {
           optionValue={restDuration}
           setValue={handleSetRestDuration}
           min={5}
+          step={5}
           disabled={Boolean(activeCycleId)}
         />
       </SettingsOption.Root>
@@ -138,6 +141,7 @@ export function Settings() {
         <SettingsOption.Slider
           range={OPTIONS[2].range}
           optionValue={roundsAmount}
+          maxValue={roundsAmount === OPTIONS[2].range ? "♾️" : undefined}
           setValue={handleSetRoundsAmount}
           min={1}
           step={1}
