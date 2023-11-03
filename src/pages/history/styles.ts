@@ -528,5 +528,5 @@ export const TotalIndicator = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px;
+  gap: 8px;
 `;

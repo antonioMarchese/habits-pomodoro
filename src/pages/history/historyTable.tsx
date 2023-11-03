@@ -9,8 +9,16 @@ import {
   Status,
   TotalIndicator,
 } from "./styles";
-import { ArrowsDownUp, CaretLeft, CaretRight, Faders } from "phosphor-react";
+import {
+  ArrowsDownUp,
+  CaretLeft,
+  CaretRight,
+  Clock,
+  Faders,
+} from "phosphor-react";
 import { BaseButton } from "../../components/button";
+import CalculateTotalMinutes from "../../utils/calculateTotalMinutes";
+import { IndicatorContainer } from "../../components/indicator";
 
 const ITEMS_PER_PAGE = 5;
 
@@ -31,6 +39,21 @@ export default function HistoryTable({
   const currentCycles = filteredCycles.slice(cyclesOffset, endOffset);
 
   const totalCycles = filteredCycles.length;
+
+  const amountTimeWorked = formatWorkDuration(
+    currentCycles.reduce(
+      (acc, cycle) =>
+        acc +
+        Math.floor(
+          CalculateTotalMinutes(
+            cycle.rounds * cycle.minutesAmount,
+            cycle.amountSecondsPassedBeforePause
+          ) * 100
+        ) /
+          100,
+      0
+    )
+  );
 
   function handleSkipPage() {
     if (cyclesOffset <= filteredCycles.length) {
@@ -92,8 +115,14 @@ export default function HistoryTable({
 
       <Paginator>
         <TotalIndicator>
-          <Faders size={18} />
-          <small>{totalCycles} ciclos encontrados</small>
+          <IndicatorContainer>
+            <Faders size={18} />
+            <small>{totalCycles} ciclos encontrados</small>
+          </IndicatorContainer>
+          <IndicatorContainer>
+            <Clock size={18} />
+            <small>{amountTimeWorked}</small>
+          </IndicatorContainer>
         </TotalIndicator>
         <ButtonContainer>
           <BaseButton disabled={cyclesOffset === 0}>
