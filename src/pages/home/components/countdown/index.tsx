@@ -19,7 +19,6 @@ export function CountDown() {
   } = useContext(CyclesContext);
   const { roundsAmount } = useContext(SettingsContext);
 
-  // substituir esse 60 * 10 por activeCycle.restMinutesAmount
   const secondsAmount = activeCycle
     ? activeCycle.isInRest
       ? 60 * activeCycle.restMinutesAmount
