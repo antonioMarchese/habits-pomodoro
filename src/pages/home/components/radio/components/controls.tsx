@@ -8,6 +8,7 @@ import { Pause, Play, SkipBack, SkipForward } from "phosphor-react";
 import { CyclesContext } from "../../../../../context/cyclesContext";
 import VolumeController from "./volumeController";
 import { SettingsContext } from "../../../../../context/settingsContext";
+import { useVisbilityState } from "../../../../../hooks/useVisibility";
 
 export function Controls({
   audioRef,
@@ -27,6 +28,7 @@ export function Controls({
   const { activeCycle } = useContext(CyclesContext);
   const [isPlaying, setIsPlaying] = useState(Boolean(activeCycle));
   const { soundVolume, setSoundVolume } = useContext(SettingsContext);
+  const { visibilityState } = useVisbilityState();
 
   const playAnimationRef = useRef<number>(0);
 
@@ -55,8 +57,10 @@ export function Controls({
     } else {
       audioRef.current!.pause();
     }
-    playAnimationRef.current = requestAnimationFrame(repeat);
-  }, [isPlaying, audioRef, repeat, currentTrackIndex]);
+
+    if (visibilityState === "visible")
+      playAnimationRef.current = requestAnimationFrame(repeat);
+  }, [isPlaying, audioRef, repeat, currentTrackIndex, visibilityState]);
 
   useEffect(() => {
     if (audioRef.current) {
