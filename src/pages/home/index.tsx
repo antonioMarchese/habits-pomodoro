@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 
 import {
   StartCountdownButton,
@@ -11,9 +11,11 @@ import {
   RoundSliderTrack,
   RoundSliderRange,
   RoundContainerHeader,
+  TextArea,
+  TextAreaContainer,
 } from "./styles";
 
-import { Clock, HandPalm, Pause, Play } from "phosphor-react";
+import { Clock, HandPalm, Pause, Play, Gear } from "phosphor-react";
 import { CountDown } from "./components/countdown";
 import { NewCycleForm as Form } from "./components/newCycleForm";
 import { FormProvider, useForm } from "react-hook-form";
@@ -22,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as zod from "zod";
 import { CyclesContext } from "../../context/cyclesContext";
 import { MAX_ROUNDS, SettingsContext } from "../../context/settingsContext";
+import { BaseButton } from "../../components/button";
 
 const newCycleFormValidationSchema = zod.object({
   task: zod.string().min(1, "Informe o nome do projeto"),
@@ -37,9 +40,13 @@ export function Home() {
     pauseCurrentCycle,
     continueCycle,
     amountSecondsPassed,
+    handleEditCycle,
   } = useContext(CyclesContext);
   const { workDuration, restDuration, roundsAmount } =
     useContext(SettingsContext);
+  const [description, setDescription] = useState(() => {
+    return activeCycle ? activeCycle.description : "";
+  });
 
   const newCycleForm = useForm<newCycleFormData>({
     resolver: zodResolver(newCycleFormValidationSchema),
@@ -55,6 +62,7 @@ export function Home() {
       restDuration,
     };
     createNewCycle(data);
+    setDescription("");
     reset();
   }
 
@@ -63,6 +71,14 @@ export function Home() {
   const task = watch("task");
 
   const isFormValid = task;
+
+  function handleChangeDescription() {
+    const changedCycle = {
+      ...activeCycle!,
+      description,
+    };
+    handleEditCycle(changedCycle);
+  }
 
   return (
     <HomeContainer>
@@ -98,9 +114,7 @@ export function Home() {
           ) : (
             <Title>
               <p>
-                Trabalhando em
-                <strong> {activeCycle.task} </strong> por{" "}
-                <strong>{activeCycle.minutesAmount}</strong> min.
+                <strong> {activeCycle.task} </strong>
               </p>
             </Title>
           )
@@ -136,6 +150,21 @@ export function Home() {
           </StartCountdownButton>
         )}
       </form>
+
+      <TextAreaContainer animate={activeCycle ? "appear" : "hide"}>
+        <TextArea
+          placeholder="Sinta-se a vontade para descrever mais detalhadamente a tarefa que está realizando"
+          value={description}
+          onChange={(e: any) => setDescription(e.target.value)}
+        />
+        <BaseButton
+          onClick={handleChangeDescription}
+          disabled={!description || description === activeCycle?.description}
+        >
+          <Gear size={24} />
+          Salvar
+        </BaseButton>
+      </TextAreaContainer>
     </HomeContainer>
   );
 }

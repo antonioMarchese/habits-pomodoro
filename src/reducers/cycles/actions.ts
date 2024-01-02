@@ -10,6 +10,7 @@ export enum actionTypes {
   MARK_REST_AS_FINISHED = "MARK_REST_AS_FINISHED",
   CLEAR_CYCLES = "CLEAR_CYCLES",
   SORT_CYCLES = "SORT_CYCLES",
+  EDIT_CYCLE = "EDIT_CYCLE",
 }
 
 export function addNewCycleAction(newCycle: CycleProps) {
@@ -17,6 +18,15 @@ export function addNewCycleAction(newCycle: CycleProps) {
     type: actionTypes.ADD_NEW_CYCLE,
     payload: {
       newCycle,
+    },
+  };
+}
+
+export function editCycle(cycle: CycleProps) {
+  return {
+    type: actionTypes.EDIT_CYCLE,
+    payload: {
+      cycle,
     },
   };
 }

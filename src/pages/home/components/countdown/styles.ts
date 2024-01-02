@@ -2,8 +2,8 @@ import { styled } from "styled-components";
 
 export const CountdownContainer = styled.div`
   font-family: "Roboto Mono", monospace;
-  font-size: 5rem;
-  line-height: 8rem;
+  font-size: 3rem;
+  line-height: 5rem;
   color: ${({ theme }) => theme["text-color"]};
   width: 100%;
 
@@ -22,9 +22,9 @@ export const CountdownContainer = styled.div`
 `;
 
 export const TimerSeparator = styled.div`
-  padding: 1rem 0;
+  padding: 0.5rem 0;
   color: ${({ theme }) => theme["green-500"]};
-  width: 2rem;
+  width: 1rem;
   overflow: hidden;
   display: flex;
   justify-content: center;
