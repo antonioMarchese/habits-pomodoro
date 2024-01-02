@@ -31,6 +31,16 @@ export function CyclesReducer(state: CyclesState, action: any) {
         draft.activeCycleId = action.payload.newCycle.id;
       });
 
+    case actionTypes.EDIT_CYCLE:
+      return produce(state, (draft) => {
+        draft.cycles = [
+          ...draft.cycles.filter(
+            (draftCycle) => draftCycle.id !== action.payload.cycle.id
+          ),
+          action.payload.cycle,
+        ];
+      });
+
     case actionTypes.INTERRUPT_CYCLE: {
       const currentCycleIndex = state.cycles.findIndex(
         (cycle) => cycle.id === state.activeCycleId

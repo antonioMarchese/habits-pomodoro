@@ -9,6 +9,7 @@ import { CyclesReducer } from "../reducers/cycles/reducer";
 import {
   addNewCycleAction,
   clearCycles,
+  editCycle,
   interrupCycle,
   markCycleFinished,
   markRundFinished,
@@ -46,6 +47,7 @@ export interface CycleProps {
   isPaused?: boolean;
   isInRest?: boolean;
   amountSecondsPassedBeforePause?: number;
+  description?: string;
 }
 
 interface CyclesContextProps {
@@ -64,6 +66,7 @@ interface CyclesContextProps {
   continueCycle: () => void;
   clearCyclesHistory: () => void;
   handleSortCycles: () => void;
+  handleEditCycle: (cycle: CycleProps) => void;
 }
 
 interface CyclesContextProviderProps {
@@ -121,6 +124,10 @@ export function CyclesContextProvider({
     dispatch(addNewCycleAction(newCycle));
     setShouldPlayAlarm(false);
     setAmountSecondsPassed(0);
+  }
+
+  function handleEditCycle(cycle: CycleProps) {
+    dispatch(editCycle(cycle));
   }
 
   function interruptCycle() {
@@ -199,6 +206,7 @@ export function CyclesContextProvider({
         continueCycle,
         clearCyclesHistory,
         handleSortCycles,
+        handleEditCycle,
       }}
     >
       {children}

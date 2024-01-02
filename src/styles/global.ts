@@ -23,4 +23,15 @@ export const GlobalStyle = createGlobalStyle`
     font-size: 1rem;
     font-weight: 400;
   }
+  
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #868686;
+    border-radius: 4px;
+  }
 `;
